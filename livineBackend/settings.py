@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'knox',
     'api',
+    'users',
     'base',
     'django_rest_passwordreset',
 
@@ -82,33 +83,34 @@ WSGI_APPLICATION = 'livineBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-#Azure Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'livine',
-        'USER': 'livine@livine-db',
-        'PASSWORD': config("LIVINE_DB_PASSWORD"),
-        'HOST': 'livine-db.postgres.database.azure.com',
-        'PORT': '5432',
-        'OPTIONS':{
-            'sslmode': 'require'
-        }
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db2.sqlite3',
     }
 }
+
+#Azure Database
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'livine',
+#         'USER': 'livine@livine-db',
+#         'PASSWORD': config("LIVINE_DB_PASSWORD"),
+#         'HOST': 'livine-db.postgres.database.azure.com',
+#         'PORT': '5432',
+#         'OPTIONS':{
+#             'sslmode': 'require'
+#         }
+
+#     }
+# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
         # 'rest_framework.authentication.SessionAuthentication',
+
         'knox.auth.TokenAuthentication',
     ]
 }
@@ -148,7 +150,7 @@ USE_TZ = True
 
 
 
-CSRF_TRUSTED_ORIGINS = ['https://*.livine.azurewebsites.net/']
+CSRF_TRUSTED_ORIGINS = ['https://*.livine.azurewebsites.net/','https://*.livine.pythonanywhere.com/']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -180,8 +182,8 @@ EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
-EMAIL_HOST_USER = 'pristineguava@gmail.com'
+EMAIL_HOST_USER = 'wildlifemain1@gmail.com'
 
-EMAIL_HOST_PASSWORD = 'mnprgqxzagekhwjf'
+EMAIL_HOST_PASSWORD = 'xrwaqistfhaslpfy'
 
 

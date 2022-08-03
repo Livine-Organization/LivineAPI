@@ -1,14 +1,14 @@
 from api.models import *
 from django.contrib import admin
 
-admin.site.register(RecipeModel)
+class CustomDisplay(admin.ModelAdmin):
+    list_display = ("name", "patient","diff","time_taken","isVegetarian")
 
-admin.site.register(RecipesTypes)
+admin.site.register(Recipe,CustomDisplay)
 
-admin.site.register(BreakfastModel)
+admin.site.register(Patient)
 
-admin.site.register(LunchModel)
 
-admin.site.register(DinnerModel)
 
-admin.site.register(SnacksModel)
+
+
