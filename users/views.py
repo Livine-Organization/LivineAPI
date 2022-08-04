@@ -1,6 +1,7 @@
 import json
 from sqlite3 import IntegrityError
 from django.shortcuts import render
+from api.serializers import RecipeSerializer
 from rest_framework.decorators import api_view , permission_classes
 from rest_framework.permissions import IsAuthenticated
 from users.serailizers import *
@@ -167,6 +168,9 @@ def delete_account(request,pk):
         user = User.objects.get(pk=pk)
         user.delete()
         return Response({"message":"success"})
+
+
+
 
 
 

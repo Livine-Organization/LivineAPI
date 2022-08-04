@@ -49,4 +49,9 @@ def recipe_all_types(request):
 
 
 
-
+@api_view(['GET'])
+def get_veg_recipes(request,pk):
+    if request.method == "GET":
+        recipes = Recipe.objects.filter(isVegetarian=True,patient=pk)
+        serializer = RecipeSerializer(recipes, many=True)
+        return Response(serializer.data)
