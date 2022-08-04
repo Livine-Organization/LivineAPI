@@ -1,3 +1,4 @@
+import json
 from sqlite3 import IntegrityError
 from django.shortcuts import render
 from rest_framework.decorators import api_view , permission_classes
@@ -95,8 +96,11 @@ def get_user(request,pk):
 
         Serializer_list = [serializer1.data, serializer2.data]
 
+        new = {}
+        for d in Serializer_list:
+            new.update(d)
         
-        return Response(Serializer_list)
+        return Response(new)
 
 
 @api_view(['POST'])
@@ -114,8 +118,11 @@ def user_update(request,pk):
         
         Serializer_list = [serializer1.data, serializer2.data]
 
-     
-        return Response(Serializer_list)
+        new = {}
+        for d in Serializer_list:
+            new.update(d)
+        
+        return Response(new)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
