@@ -52,11 +52,10 @@ class LoginAPI(KnoxLoginView):
         serializer = AuthTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
-        print(user.id)
         try:
             login(request, user)
         except:
-            print("Error")
+            UserProfile.objects.create(user=user)
 
         temp_list=super(LoginAPI, self).post(request, format=None)
         temp_list.data['user_id'] = user.id 
