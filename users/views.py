@@ -80,10 +80,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
     )
 
 
-
-
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
 def get_user(request,pk):
     if request.method == "GET":
         user = User.objects.get(pk=pk)
@@ -102,7 +99,6 @@ def get_user(request,pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
 def user_update(request,pk):
     if request.method == "POST":
         user = User.objects.get(pk=pk)
@@ -119,8 +115,16 @@ def user_update(request,pk):
      
         return Response(Serializer_list)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_favorites(request,pk):
+    if request.method == "GET":
+        user = User.objects.get(pk=pk)
+        serializer = FavoriteSerializer(user.userprofile)
+        return Response(serializer.data)
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def add_favorites(request,pk):
     if request.method == "POST":
         user = User.objects.get(pk=pk)
@@ -130,12 +134,31 @@ def add_favorites(request,pk):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def delete_favorites(request,pk):
     if request.method == "POST":
         user = User.objects.get(pk=pk)
         user.userprofile.favorites.remove(request.data['id'])
         user.userprofile.save()
         return Response({"message":"success"})
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_account(request,pk):
+    if request.method == "DELETE":
+        user = User.objects.get(pk=pk)
+        user.delete()
+        return Response({"message":"success"})
+
+
+# @api_view(['POST'])
+# def update_patient_id(request,pk):
+#     if request.method == "POST":
+#         user = User.objects.get(pk=pk)
+#         user.userprofile.patient.name = request.data['patient']
+#         user.userprofile.save()
+#         return Response({"message":"success"})
 
 
 

@@ -90,29 +90,15 @@ DATABASES = {
     }
 }
 
-#Azure Database
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'livine',
-#         'USER': 'livine@livine-db',
-#         'PASSWORD': config("LIVINE_DB_PASSWORD"),
-#         'HOST': 'livine-db.postgres.database.azure.com',
-#         'PORT': '5432',
-#         'OPTIONS':{
-#             'sslmode': 'require'
-#         }
-
-#     }
-# }
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # 'rest_framework.authentication.BasicAuthentication',
-        # 'rest_framework.authentication.SessionAuthentication',
-
         'knox.auth.TokenAuthentication',
     ]
+}
+
+REST_KNOX = {
+    'TOKEN_TTL' : None
 }
 
 

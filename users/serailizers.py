@@ -20,6 +20,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = ['patient','isVegan']
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
     favorites = serializers.SerializerMethodField(source="favorites")
 
     def get_favorites(self, instance):
@@ -34,7 +41,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['patient','isVegan','favorites']
+        fields = ['favorites']
 
 
 
