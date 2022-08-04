@@ -8,7 +8,7 @@ urlpatterns = [
     path('user/<int:pk>/', views.get_user, name='Users'),
     path('user/delete/<int:pk>/', views.delete_account, name='Delete Account'),
 
-    path('user/update/<int:pk>', views.user_update, name='UsersUpdate'),
+    path('user/update/<int:pk>/', views.user_update, name='UsersUpdate'),
     path('login/', views.LoginAPI.as_view(), name='login'),
     path('logout/', knox_views.LogoutView.as_view(), name='logout'),
     path('logoutall/', knox_views.LogoutAllView.as_view(), name='logoutall'),
