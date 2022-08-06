@@ -7,6 +7,7 @@ urlpatterns = [
      path('register/', views.RegisterAPI.as_view(), name='register'),
     path('user/<int:pk>/', views.get_user, name='Users'),
     path('user/delete/<int:pk>/', views.delete_account, name='Delete Account'),
+    path('user/veg/<int:pk>/', views.get_user_veg_status),
 
     path('user/update/<int:pk>/', views.user_update, name='UsersUpdate'),
     path('login/', views.LoginAPI.as_view(), name='login'),

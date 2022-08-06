@@ -173,6 +173,16 @@ def delete_account(request,pk):
 
 
 
+@api_view(['GET'])
+def get_user_veg_status(request,pk):
+    if request.method == "GET":
+        user = User.objects.get(pk=pk)
+        try:
+            return Response({"isVegan":user.userprofile.isVegan})
+        except UserProfile.DoesNotExist:
+            UserProfile.objects.create(user=user)
+            return Response({"isVegan":user.userprofile.isVegan})
+
 
 
 

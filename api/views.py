@@ -55,3 +55,4 @@ def get_veg_recipes(request,pk):
         recipes = Recipe.objects.filter(isVegetarian=True,patient=pk)
         serializer = RecipeSerializer(recipes, many=True)
         return Response(serializer.data)
+
