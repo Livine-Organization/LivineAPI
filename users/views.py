@@ -184,6 +184,26 @@ def get_user_veg_status(request,pk):
             return Response({"isVegan":user.userprofile.isVegan})
 
 
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_user_veg_status(request,pk):
+    if request.method == "POST":
+        user = User.objects.get(pk=pk)
+        
+        user.userprofile.isVegan = request.data['isVegan']
+        user.userprofile.save()
+        return Response({"message":"success"})
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_patient(request,pk):
+    if request.method == "POST":
+        user = User.objects.get(pk=pk)
+        user.userprofile.patient = request.data['patient']
+        user.userprofile.save()
+        return Response({"message":"success"})
+        
+
 
 
 
