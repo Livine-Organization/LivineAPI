@@ -3,7 +3,7 @@ from sqlite3 import IntegrityError
 from django.shortcuts import render
 from api.serializers import RecipeSerializer
 from rest_framework.decorators import api_view , permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 from users.serailizers import *
 from rest_framework.response import Response
 from django.contrib.auth import login
@@ -21,6 +21,7 @@ from django.dispatch import receiver
 # Register User
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
+    permission_classes = (permissions.AllowAny,)
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -83,20 +84,30 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_user(request,pk):
+@permission_classes([AllowAny])
+def get_user(request):
     if request.method == "GET":
-        user = User.objects.get(pk=pk)
-        serializer1 = UserSerializer(user)
+        
+        user = request.user
+        if user.is_authenticated:
+            try:
+                
+                serializer1 = UserSerializer(user)
+                serializer2 = UserProfileSerializer(user.userprofile)
+            except UserProfile.DoesNotExist:
 
-        try:
-            serializer2 = UserProfileSerializer(user.userprofile)
-        except UserProfile.DoesNotExist:
-            profile_created = UserProfile.objects.create(user=user)
-            serializer2 = UserProfileSerializer(profile_created,many=True)
+                profile_created = UserProfile.objects.create(user=user)
+                serializer2 = UserProfileSerializer(profile_created,many=True)
+        else:
+            guest_data = {
+                "id": 0,
+                "username": "GUEST",
+                "email": "",
+            }
+            return Response(guest_data)
+        
 
         Serializer_list = [serializer1.data, serializer2.data]
-
         new = {}
         for d in Serializer_list:
             new.update(d)
@@ -105,16 +116,17 @@ def get_user(request,pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def user_update(request,pk):
+def user_update(request):
     if request.method == "POST":
-        user = User.objects.get(pk=pk)
+        user = request.user
         
         serializer1 = UserSerializer(instance = user, data = request.data)
         serializer2 = UserProfileSerializer(instance = user.userprofile, data = request.data)
 
-        if serializer1.is_valid() and serializer2.is_valid():
+        if serializer1.is_valid():
             serializer1.save()
+        
+        if serializer2.is_valid():
             serializer2.save()
         
         Serializer_list = [serializer1.data, serializer2.data]
@@ -126,18 +138,16 @@ def user_update(request,pk):
         return Response(new)
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def get_favorites(request,pk):
+def get_favorites(request):
     if request.method == "GET":
-        user = User.objects.get(pk=pk)
+        user = request.user
         serializer = FavoriteSerializer(user.userprofile)
         return Response(serializer.data)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def add_favorites(request,pk):
+def add_favorites(request):
     if request.method == "POST":
-        user = User.objects.get(pk=pk)
+        user = request.user
         try:
             user.userprofile.favorites.add(Recipe.objects.get(pk=request.data['id']))
         except Recipe.DoesNotExist:
@@ -148,10 +158,9 @@ def add_favorites(request,pk):
 
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
-def delete_favorites(request,pk):
+def delete_favorites(request):
     if request.method == "POST":
-        user = User.objects.get(pk=pk)
+        user = request.user
         try:
             user.userprofile.favorites.remove(Recipe.objects.get(pk=request.data['id']))
         except Recipe.DoesNotExist:
@@ -162,10 +171,9 @@ def delete_favorites(request,pk):
 
 
 @api_view(['DELETE'])
-@permission_classes([IsAuthenticated])
-def delete_account(request,pk):
+def delete_account(request):
     if request.method == "DELETE":
-        user = User.objects.get(pk=pk)
+        user = request.user
         user.delete()
         return Response({"message":"success"})
 
@@ -174,14 +182,14 @@ def delete_account(request,pk):
 
 
 @api_view(['GET'])
-def get_user_veg_status(request,pk):
+def get_user_veg_status(request):
     if request.method == "GET":
-        user = User.objects.get(pk=pk)
+        user = request.user
         try:
-            return Response({"isVegan":user.userprofile.isVegan})
+            return Response(user.userprofile.isVegan)
         except UserProfile.DoesNotExist:
             UserProfile.objects.create(user=user)
-            return Response({"isVegan":user.userprofile.isVegan})
+            return Response(user.userprofile.isVegan)
 
 
 
