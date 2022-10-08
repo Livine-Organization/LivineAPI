@@ -67,9 +67,10 @@ class LoginAPI(KnoxLoginView):
 
 
 @receiver(reset_password_token_created)
+@permission_classes([AllowAny])
 def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
 
-    msg = "Your code is ".format(reset_password_token.key)
+    msg = "Your code is {}".format(reset_password_token.key)
 
     send_mail(
         # title:
@@ -77,7 +78,7 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # message:
         msg,
         # from:
-        "pristineguava@gmail.com",
+        "mazendeveloper1@gmail.com",
         # to:
         [reset_password_token.user.email]
     )

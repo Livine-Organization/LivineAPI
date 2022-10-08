@@ -1,7 +1,7 @@
 
 from django.db import models
 
-from PIL import Image
+from .compress_image import compress
 
 class Patient(models.Model):
     name = models.CharField(max_length=100,null=True)
@@ -46,15 +46,12 @@ class Recipe(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):
-        super(Recipe, self).save(*args, **kwargs)
+        new_image = compress(self.imageURL)
+        # set self.image to new_image
+        self.imageURL = new_image
+        # save
+        super().save(*args, **kwargs)
 
-        img = Image.open(self.imageURL.path)
-
-        if img.height > 500 or img.width > 500 :
-            output_size = (500,500)
-            
-            img.thumbnail(output_size)
-            img.save(self.imageURL.path)
         
     def __str__(self):
         return self.name

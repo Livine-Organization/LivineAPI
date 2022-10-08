@@ -5,8 +5,9 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
-
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import AllowAny
 
 def index(request):
     return render(request, 'api/index.html')
@@ -47,4 +48,12 @@ def get_veg_recipes(request,pk):
         recipes = Recipe.objects.filter(isVegetarian=True,patient=pk)
         serializer = RecipeSerializer(recipes, many=True)
         return Response(serializer.data,content_type='application/json;charset=UTF-8')
+    
 
+
+class RecipeListView(ListAPIView):
+    permission_classes = (AllowAny,)
+    queryset = Recipe.objects.all()
+    serializer_class = RecipeSerializer
+    filter_backends = (SearchFilter,OrderingFilter)
+    search_fields = ['name','name_in_arabic','ingridents','ingridents_in_arabic']
