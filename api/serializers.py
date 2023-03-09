@@ -6,28 +6,24 @@ import base64
 import six
 import uuid
 from users.models import *
+from django.utils.translation import gettext_lazy as _
 
 class RecipeSerializer(serializers.ModelSerializer):
     ingridents = serializers.SerializerMethodField(source="ingridents")
-    ingridents_in_arabic = serializers.SerializerMethodField(source="ingridents_in_arabic")
     
     directions = serializers.SerializerMethodField(source="directions")
 
     patient = serializers.SerializerMethodField(source="patient.name")
 
-    patient_in_arabic = serializers.SerializerMethodField(source="patient.name_in_arabic")
+    difficulty = serializers.SerializerMethodField(source="difficulty.name")
 
-    directions_in_arabic = serializers.SerializerMethodField(source="directions_in_arabic")
-
+    class Meta: 
+        model = Recipe
+        fields = ['id','name','ingridents','directions','patient','difficulty','time_taken','isVegetarian','created_at'] 
 
     def get_ingridents(self, instance):
         ig = instance.ingridents.splitlines()
         x = [x for x in ig if x]
-        return x
-
-    def get_ingridents_in_arabic(self, instance):
-        ig_a = instance.ingridents_in_arabic.splitlines()
-        x = [x for x in ig_a if x]
         return x
     
     def get_directions(self, instance):
@@ -35,25 +31,19 @@ class RecipeSerializer(serializers.ModelSerializer):
         x = [x for x in dr if x]
         return x
 
-    def get_directions_in_arabic(self, instance):
-        dr_a = instance.directions_in_arabic.splitlines()
-        x = [x for x in dr_a if x]
-        return x
-
     def get_patient(self, instance):
         return instance.patient.name
     
-    def get_patient_in_arabic(self, instance):
-        return instance.patient.name_in_arabic
-
-
-    
-    class Meta: 
-        model = Recipe
-        fields = '__all__' 
-
+    def get_difficulty(self, instance):
+        return instance.difficulty.name
+   
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Patient
         fields = '__all__' 
+
+class ErrorSerializer(serializers.ModelSerializer):
+    class Meta: 
+        model = Error
+        fields = '__all__'

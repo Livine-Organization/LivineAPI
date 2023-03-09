@@ -2,47 +2,32 @@
 from django.db import models
 
 from .compress_image import compress
+from django.utils.translation import gettext as _
 
 class Patient(models.Model):
     name = models.CharField(max_length=100,null=True)
-    name_in_arabic = models.CharField(max_length=100,null=True)
 
     def __str__(self):
         return self.name
 
-
-class Recipe(models.Model):
-    diff_list = (("Easy","Easy"),("Medium","Medium"),("Hard","Hard"))
-
+class Difficulty(models.Model):
     name = models.CharField(max_length=50)
 
-    name_in_arabic= models.CharField(max_length=50,default='')
-
+    def __str__(self):
+        return self.name
+    
+class Recipe(models.Model):
+    name = models.CharField(max_length=50)
     imageURL = models.ImageField(upload_to='recipes', null=True)
-
-    diff = models.CharField(max_length=10, choices=diff_list, default="Easy")
-
+    difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, null=True)
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
-
     isVegetarian = models.BooleanField(default=False)
-
     time_taken = models.IntegerField(null=True)
-
     calories = models.IntegerField(null=True)
-
     video = models.CharField(max_length=500, null=True)
-
-    video_in_arabic = models.CharField(max_length=500, null=True)
-
     ingridents = models.TextField(default="")
-
-    ingridents_in_arabic = models.TextField(default="")
-    
-    
     directions = models.TextField(default="")
     
-    directions_in_arabic = models.TextField(default="")
-
     created_at = models.DateTimeField(auto_now=True)
     
     def save(self, *args, **kwargs):
@@ -55,6 +40,17 @@ class Recipe(models.Model):
         
     def __str__(self):
         return self.name
+
+
+class Error(models.Model):
+    model = models.CharField(max_length=100)
+    device = models.CharField(max_length=100)
+    device_version = models.CharField(max_length=100,default="")
+    error = models.TextField(default="")
+    created_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.error
 
 
 
