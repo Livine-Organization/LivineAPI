@@ -89,12 +89,12 @@ WSGI_APPLICATION = 'livineBackend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "Livine2$livine",
-        "USER": "Livine2",
-        'PASSWORD': config("DB_PASSWORD"),
-        'HOST': "Livine2.mysql.pythonanywhere-services.com",
-        'PORT': "3306",
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': "db.sqlite3",
+        # "USER": "Livine2",
+        # 'PASSWORD': config("DB_PASSWORD"),
+        # 'HOST': "Livine2.mysql.pythonanywhere-services.com",
+        # 'PORT': "3306",
         
     }
 }
