@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/6428a791-6b10-4c27-a46c-74f9e3178007/microsoft.web/sites/subscriptions/6428a791-6b10-4c27-a46c-74f9e3178007/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/livine",
+    "appService.deploySubpath": "."
+}
