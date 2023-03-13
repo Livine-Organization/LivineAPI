@@ -11,7 +11,7 @@ from rest_framework import generics, permissions
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from django.core.mail import send_mail  
 from django.dispatch import receiver
-
+from django.utils.translation import gettext_lazy as _
 
 
 # Register User
@@ -98,9 +98,14 @@ def get_user(request):
         else:
             guest_data = {
                 "id": 0,
-                "username": "GUEST",
+                "username": "Guest",
                 "email": "",
             }
+            # get Accept-Language header from request
+            accept_language = request.META.get('HTTP_ACCEPT_LANGUAGE', '')
+            if accept_language.startswith('ar'):
+                guest_data["username"] = "ضيف"
+            
             return Response(guest_data)
         
 
@@ -187,6 +192,9 @@ def get_user_veg_status(request):
         except UserProfile.DoesNotExist:
             UserProfile.objects.create(user=user)
             return Response(user.userprofile.isVegan)
+
+
+
 
 
 

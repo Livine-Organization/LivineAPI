@@ -17,7 +17,7 @@ class VegRecipeListView(ListAPIView):
     permission_classes = [AllowAny]
     serializer_class = RecipeSerializer
     filter_backends = [SearchFilter,OrderingFilter]
-    search_fields = ['name','name_in_arabic','ingridents','ingridents_in_arabic']
+    search_fields = ['name_en','name_ar','ingridents_en','ingridents_ar']
     def get_queryset(self):
         queryset = Recipe.objects.filter(isVegetarian=True,patient=self.kwargs['pk']).order_by('-created_at')
         return queryset
@@ -26,12 +26,13 @@ class RecipeListView(ListAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RecipeSerializer
     filter_backends = (SearchFilter,OrderingFilter)
-    search_fields = ['name','ingridents']
+    search_fields = ['name_en','name_ar','ingridents_en','ingridents_ar']
     def get_queryset(self):
         queryset = Recipe.objects.filter(patient=self.kwargs['patient']).order_by('-created_at')    
         return queryset
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def recipeDetail(request,pk):
     if request.method == "GET":
         recipe = Recipe.objects.get(pk=pk)
@@ -43,6 +44,7 @@ def recipeDetail(request,pk):
 
 
 @api_view(['GET'])
+@permission_classes([AllowAny])
 def all_patients(request):
     if request.method == "GET":
         recipe = Patient.objects.all()

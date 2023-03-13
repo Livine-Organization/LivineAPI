@@ -13,6 +13,7 @@ class Patient(models.Model):
 
 class Difficulty(models.Model):
     name = models.CharField(max_length=50)
+    image = models.ImageField(upload_to='difficulties', null=True)
 
     def __str__(self):
         return self.name

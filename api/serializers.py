@@ -17,9 +17,11 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     difficulty = serializers.SerializerMethodField(source="difficulty.name")
 
+    difficulty_image = serializers.ImageField(source="difficulty.image",use_url=True)
+
     class Meta: 
         model = Recipe
-        fields = ['id','name','ingridents','directions','patient','difficulty','time_taken','isVegetarian','created_at'] 
+        fields = ["id", "name", "ingridents", "directions", "patient", "difficulty", "difficulty_image","imageURL", "created_at", "video","isVegetarian","time_taken","calories"]
 
     def get_ingridents(self, instance):
         ig = instance.ingridents.splitlines()
@@ -36,12 +38,15 @@ class RecipeSerializer(serializers.ModelSerializer):
     
     def get_difficulty(self, instance):
         return instance.difficulty.name
+
+    def get_difficulty_image(self, instance):
+        return instance.difficulty.image.path
    
 
 class PatientSerializer(serializers.ModelSerializer):
     class Meta: 
         model = Patient
-        fields = '__all__' 
+        fields = ["id", "name","image"]
 
 class ErrorSerializer(serializers.ModelSerializer):
     class Meta: 

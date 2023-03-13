@@ -32,8 +32,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
     def get_favorites(self, instance):
         data = {"id": [x.id for x in instance.favorites.all()], 
         "name": [x.name for x in instance.favorites.all()],
-        "name_in_arabic": [x.name_in_arabic for x in instance.favorites.all()],
-        "imageURL": [x.imageURL.path[24:] for x in instance.favorites.all()],
+        "imageURL": [x.imageURL.url for x in instance.favorites.all()],
 
         }
 
