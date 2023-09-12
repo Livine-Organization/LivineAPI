@@ -195,7 +195,14 @@ def get_user_veg_status(request):
 
 
 
-
+@api_view(['PUT'])
+def update_points(request):
+    if request.method == "PUT":
+        user = request.user
+        request_points = request.data['points']
+        user.userprofile.points += request_points
+        user.userprofile.save()
+        return Response({"message":"points updated"})
 
 
 

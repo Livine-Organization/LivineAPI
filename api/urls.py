@@ -8,4 +8,6 @@ urlpatterns = [
     path('allPatients/', views.all_patients),
     path('', include('users.urls')),
     path('errors/', views.errors),
+    path('update/', views.update),
+
 ]

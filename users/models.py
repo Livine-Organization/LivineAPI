@@ -7,6 +7,7 @@ class UserProfile(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, null=True)
     isVegan = models.BooleanField(default=False)
     favorites = models.ManyToManyField(Recipe, blank=True)
+    points = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.user.username + " Profile"

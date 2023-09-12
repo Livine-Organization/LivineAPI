@@ -21,6 +21,8 @@ urlpatterns = [
     path('addfavorite/', views.add_favorites, name='Add Favorites'),
     path('deletefavorite/', views.delete_favorites, name='Delete Favorites'),
 
+    path('user/update/points/', views.update_points, name='Update points'),
+
 
 
 ]

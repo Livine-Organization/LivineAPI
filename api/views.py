@@ -8,7 +8,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
 from django.utils.translation import gettext_lazy as _
-
+import os
 def index(request):
     return render(request, 'api/index.html')
 
@@ -62,5 +62,23 @@ def errors(request):
             return Response(serializer.data)
         return Response(serializer.errors)   
 
+
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def update(request):
+    latest_version = "8.5.5"
+    media_url = "http://"+request.META['HTTP_HOST']+"/media/apk/"
+    hardware = request.data['hardware']
+    download_url = media_url+ "app-armeabi-v7a-release.apk"
+    if "v7a" in hardware:
+        download_url = media_url+ "app-armeabi-v7a-release.apk"
+    elif "v8a" in hardware:
+        download_url = media_url+ "app-arm64-v8a-release.apk"
+    elif "x86" in hardware:
+        download_url = media_url+ "app-x86_64-release.apk"
+
+    return Response({"latest_version":latest_version,"download_url":download_url})
+    
 
 

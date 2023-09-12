@@ -23,7 +23,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
-        fields = ['patient','isVegan']
+        fields = ['patient','isVegan','points']
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
